@@ -40,3 +40,9 @@ class MovieViewSet(viewsets.ModelViewSet):
         elif self.action == "retrieve":
             return MovieRetrieveSerializer
         return MovieSerializer
+    
+    def get_queryset(self):
+        queryset = self.queryset
+        if self.action in ("list", "retrieve",):
+            queryset = queryset.prefetch_related("genres", "actors")
+        return queryset
